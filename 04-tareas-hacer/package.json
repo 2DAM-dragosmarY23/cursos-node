@@ -11,6 +11,7 @@
   "description": "",
   "dependencies": {
     "clear": "^0.1.0",
-    "colors": "^1.4.0"
+    "colors": "^1.4.0",
+    "inquirer": "^12.5.0"
   }
 }
