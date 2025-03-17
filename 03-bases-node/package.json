@@ -1,0 +1,23 @@
+{
+  "name": "03-bases-node",
+  "version": "0.0.2",
+  "description": "Es una simple tabla de multiplicar con archivos de texto",
+  "main": "app.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "numero9": "node app.js --numero=9",
+    "dev": "nodemon --exec node app --numero=9"
+  },
+  "author": "Dragos",
+  "license": "MIT",
+  "devDependencies": {
+    "nodemon": "^3.1.9",
+    "webpack": "^5.30.0",
+    "webpack-cli": "^4.6.0"
+  },
+  "dependencies": {
+    "clear": "^0.1.0",
+    "colors": "^1.4.0",
+    "yargs": "^17.7.2"
+  }
+}
