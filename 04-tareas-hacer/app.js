@@ -4,7 +4,10 @@ const inquirer = require('inquirer');
 const {
     inquireMenu,
     pause,
-    readInput
+    readInput,
+    listTaskDelete,
+    confirm,
+    showListChecklist
 } = require('./helpers/inquirer');
 
 const Tasks = require('./models/tasks');
@@ -25,7 +28,7 @@ const main = async () => {
     const tasksDB = readDB();
 
     if (tasksDB) { //cargar tareas
-        
+
         tasks.loadTasksFromArray(tasksDB);
 
     }
@@ -48,18 +51,33 @@ const main = async () => {
                 break;
 
             case '3':
-
+                tasks.listPendingCompleted(true);
                 break;
 
             case '4':
-
+                tasks.listPendingCompleted(false);
                 break;
 
             case '5':
-
+                const ids = await showListChecklist(tasks.listArr);
+                tasks.toggleCompleted(ids);
+                
                 break;
 
             case '6':
+                const id = await listTaskDelete(tasks.listArr);
+                if (id !== '0') {
+                    const ok = await confirm('¿Está seguro de que quiere borrarlo?');
+                    if (ok) {
+                        tasks.deleteTask(id);
+                        console.log('Tarea borrada');
+
+                    }
+                    // TODO: preguntar si está seguro
+
+                    console.log({ ok });
+                }
+
 
                 break;
 

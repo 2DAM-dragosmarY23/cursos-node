@@ -3,6 +3,7 @@ require('colors');
 const clear = require('clear');
 const { validate } = require('uuid');
 
+// Una función que retorna un objeto con las opciones del menú
 const questions = [{
     type: 'list',
     name: 'option',
@@ -47,6 +48,7 @@ const questions = [{
 }];
 
 
+// Función que imprime el menú y retorna la opción seleccionada
 const inquireMenu = async () => {
     clear();
 
@@ -58,12 +60,9 @@ const inquireMenu = async () => {
 
     return option;
 
-
-
-
 }
 
-
+// Función que pausa la ejecución del programa
 const pause = async () => {
 
 
@@ -82,6 +81,8 @@ const pause = async () => {
 
 }
 
+
+// Función que lee la descripción de la tarea
 const readInput = async (message) => {
 
     const question = [
@@ -99,8 +100,90 @@ const readInput = async (message) => {
 
     ];
 
-    const {desc} = await inquirer.prompt(question);
+    const { desc } = await inquirer.prompt(question);
     return desc;
+
+}
+
+
+// Función que lista las tareas a borrar
+const listTaskDelete = async (tasks = []) => {
+
+    const choices = tasks.map((task, i) => {
+
+        const idx = `${i + 1}.`.cyan;
+
+        return {
+            value: task.id,
+            name: `${idx} ${task.desc}`
+        }
+    });
+
+    choices.unshift({
+        value: '0',
+        name: '0.'.cyan + ' Cancelar'
+    });
+
+    const questionsDelete = [
+        {
+            type: 'list',
+            name: 'id',
+            message: 'Borrar',
+            choices
+
+        }
+    ]
+
+    const { id } = await inquirer.prompt(questionsDelete);
+
+    return id;
+
+}
+
+// Función que confirma la eliminación de una tarea
+const confirm = async (message) => {
+
+    const question = [
+        {
+            type: 'confirm',
+            name: 'ok',
+            message
+        }
+    ];
+
+    const { ok } = await inquirer.prompt(question);
+return ok;
+
+}
+
+const showListChecklist = async (tasks = []) => {
+
+    const choices = tasks.map((task, i) => {
+
+        const idx = `${i + 1}.`.cyan;
+
+        return {
+            value: task.id,
+            name: `${idx} ${task.desc}`,
+            checked: (task.completed) ? true : false
+        }
+    });
+
+   
+
+    const question = [
+        {
+            type: 'checkbox',
+            name: 'ids',
+            message: 'Selecciones',
+            choices
+
+        }
+    ]
+
+    const { ids } = await inquirer.prompt(question);
+
+    return ids;
 
 }
 
@@ -109,6 +192,9 @@ const readInput = async (message) => {
 module.exports = {
     inquireMenu,
     pause,
-    readInput
+    readInput,
+    listTaskDelete,
+    confirm,
+    showListChecklist
 }
 

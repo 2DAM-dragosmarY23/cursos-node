@@ -1,9 +1,15 @@
 const Task = require('./task');
+const inquirer = require('inquirer').default;
+
 
 class Tasks {
 
-    _list = {};
+    _list = {
+        'abc': 123
+    };
 
+
+    // Array de tareas
     get listArr() {
 
         const list = [];
@@ -22,10 +28,18 @@ class Tasks {
         this._list = {};
     }
 
+    //Función para borrar una tarea
+    deleteTask(id = '') {
+        if (this._list[id]) {
+            delete this._list[id];
+        }
+    }
+
+    //Función para cargar las tareas
     loadTasksFromArray(tasks = []) {
 
         tasks.forEach(task => {
-            
+
             this._list[task.id] = task;
 
         });
@@ -33,11 +47,7 @@ class Tasks {
 
     }
 
-    // taskDelete(opt) {
-    //     const 
-    // }
-
-
+    //Función para crear una tarea
     taskCreate(desc = '') {
         const task = new Task(desc);
 
@@ -45,21 +55,76 @@ class Tasks {
 
     }
 
+    //Función para mostrar las tareas 
     completeList() {
 
         console.log();
-        this.listArr.forEach((task, i) =>{
+        this.listArr.forEach((task, i) => {
             const idx = `${i + 1}`.cyan;
-            const {desc, completed} = task;
-            //Tiene que quedar asi 1. tarea :: completada | pendiente
+            const { desc, completed } = task;
             const state = (completed) ? 'Completada'.green : 'Pendiente'.red;
+
             console.log(`${idx} ${desc} :: ${state}`);
-            
+
 
         })
 
     }
 
+
+    //Función para listar las tareas pendientes o completadas
+    listPendingCompleted(completedIn = true) {
+
+        console.log();
+        let count = 0;
+        this.listArr.forEach((task) => {
+
+            const { desc, completed } = task;
+
+            const state = (completed)
+                ? 'Completada'.green
+                : 'Pendiente'.red;
+
+            if (completedIn) {
+                //mostrar completadas
+                if (completed) {
+                    count += 1;
+                    console.log(`${count.toString().cyan} ${'.'.cyan} ${desc} :: ${completed.cyan}`);
+                }
+            } else {
+                if (!completed) {
+                    count += 1;
+                    console.log(`${count.toString().cyan} ${'.'.cyan} ${desc} :: ${state}`);
+                }
+            }
+
+        });
+
+
+
+
+    }
+
+    //Función para marcar tareas completadas
+    toggleCompleted(ids = []) {
+
+        ids.forEach(id => {
+            const task = this._list[id];
+            if (!task.completed) {
+                task.completed = new Date().toISOString();
+            }
+        });
+
+        this.listArr.forEach(task => {
+
+            if (!ids.includes(task.id)) {
+                this._list[task.id].completed = null;
+                
+            }
+
+        });
+
+    }
 }
 
 
