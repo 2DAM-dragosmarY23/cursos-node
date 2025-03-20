@@ -87,15 +87,15 @@ const readInput = async (message) => {
 
 
 // Función que lista las tareas a borrar
-const listTaskDelete = async (tasks = []) => {
+const listPlaces = async (places = []) => {
 
-    const choices = tasks.map((task, i) => {
+    const choices = places.map((place, i) => {
 
         const idx = `${i + 1}.`.cyan;
 
         return {
-            value: task.id,
-            name: `${idx} ${task.desc}`
+            value: place.id,
+            name: `${idx} ${place.name}`
         }
     });
 
@@ -108,7 +108,40 @@ const listTaskDelete = async (tasks = []) => {
         {
             type: 'list',
             name: 'id',
-            message: 'Borrar',
+            message: 'Seleccione lugar:',
+            choices
+
+        }
+    ]
+
+    const { id } = await inquirer.prompt(questionsDelete);
+
+    return id;
+
+}
+
+const listWeather = async (weather = []) => {
+
+    const choices = weather.map((weather, i) => {
+
+        const idx = `${i + 1}.`.cyan;
+
+        return {
+            value: place.id,
+            name: `${idx} ${place.name}`
+        }
+    });
+
+    choices.unshift({
+        value: '0',
+        name: '0.'.cyan + ' Cancelar'
+    });
+
+    const questionsDelete = [
+        {
+            type: 'list',
+            name: 'id',
+            message: 'Seleccione lugar:',
             choices
 
         }
@@ -173,7 +206,7 @@ module.exports = {
     inquireMenu,
     pause,
     readInput,
-    listTaskDelete,
+    listPlaces,
     confirm,
     showListChecklist
 }
