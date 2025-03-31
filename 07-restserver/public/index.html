@@ -13,12 +13,15 @@
     <hr />
 
     <div id="g_id_onload" data-client_id="1047597639504-8ptnebe33j62hsj6i6fh3seolcpraslq.apps.googleusercontent.com"
-        data-login_uri="https://your.domain/your_login_endpoint" data-auto_prompt="false"
-        data-callback="handleCredentialResponse">
+        data-auto_prompt="false" data-callback="handleCredentialResponse">
     </div>
     <div class="g_id_signin" data-type="standard" data-size="large" data-theme="outline" data-text="sign_in_with"
         data-shape="rectangular" data-logo_alignment="left">
     </div>
+
+    <button id="google_signout">
+        Signout
+    </button>
 
 
 
@@ -28,29 +31,46 @@
     <script>
         function handleCredentialResponse(response) {
 
+            if (!response.credential) {
+                console.error('No se recibió un id_token de Google');
+                return;
+            }
+
             //Google Token : ID_TOKEN
             //Esta es la respuesta que se envia al backend para autenticar al usuario
-            const body = {id_token: response.credential};
+            const body = { id_token: response.credential };
             console.log('id_token', response.credential);
 
             //Aqui se envia el token al backend, concretamente a la carpeta routes/auth.controllers.js
             fetch('http://localhost:8080/api/auth/google', {
                 method: 'POST',
                 headers: {
-                    'Content-Type':'application/json'
+                    'Content-Type': 'application/json'
                 },
                 body: JSON.stringify(body)
             })
                 .then(resp => resp.json())
                 .then(resp => {
                     console.log(resp);
+                    localStorage.setItem('email', resp.user.email)
 
                 })
                 .catch(console.warn)
+        }
 
+        const button = document.getElementById('google_signout');
+        button.onclick = () => {
+            console.log(google.accounts.id);
+            google.accounts.id.disableAutoSelect();
 
+            google.accounts.id.revoke( localStorage.getItem('email', done => {
+                localStorage.clear();
+                localStorage.reload();
+
+            }));
 
         }
+
     </script>
 
 </body>

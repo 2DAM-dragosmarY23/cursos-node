@@ -8,12 +8,19 @@ async function googleVerify(token = '') {
             idToken: token,
             audience: process.env.GOOGLE_CLIENT_ID,
         });
-        const { name, picture, email } = ticket.getPayload();
+        const { name, picture, email, exp } = ticket.getPayload();
+
+
+        const currentTime = Math.floor(Date.now() / 1000); // Tiempo actual en segundos
+        if (exp < currentTime) {
+            throw new Error('El token de Google ha expirado');
+        }
 
         return {
             name,
             img: picture,
-            email
+            email,
+            currentTime
         };
     } catch (error) {
         console.error('Error verifying Google token:', error.message);
