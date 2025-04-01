@@ -1,6 +1,7 @@
 const Role = require('../models/role');
 const User = require('../models/user');
 const Category = require('../models/category');
+const { Product } = require('../models');
 
 
 const isValidRole = async (role = '') => {
@@ -32,15 +33,23 @@ const existsUserId = async (id) => {
 }
 
 const existCategory = async (id) => {
-    //Verificar si la categoria existe
+    console.log("Verificando categoría con ID:", id); // Agrega este log para depurar
     const existsCategory = await Category.findById(id);
     if (!existsCategory) {
         throw new Error(`La categoria con el id: ${id} no existe`);
+    }
+};
+
+const existProduct = async (id) => {
+    //Verificar si el producto existe
+    const existsProduct = await Product.findById(id);
+    if (!existsProduct) {
+        throw new Error(`El producto con el id: ${id} no existe`);
     }
 
 }
 
 
-module.exports = { isValidRole, emailExists, existsUserId, existCategory }
+module.exports = { isValidRole, emailExists, existsUserId, existCategory, existProduct }
 
 
