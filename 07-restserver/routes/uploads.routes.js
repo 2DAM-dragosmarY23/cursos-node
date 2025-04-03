@@ -10,9 +10,10 @@ const { validateArchiveUp } = require('../middlewares');
 
 const router = Router();
 
-
+/// Subir archivos
 router.post('/', loadArchive);
 
+// Subir archivos a una colección
 router.put('/:collection/:id', [
     validateArchiveUp,
     check('id', 'No es un ID valido').isMongoId(),
@@ -21,6 +22,7 @@ router.put('/:collection/:id', [
 ], updateImageCloudinary);
 // ], updateImage);
 
+// Mostrar imagen
 router.get('/:collection/:id', [
     check('id', 'No es un ID valido').isMongoId(),
     check('collection').custom(c => validCollections(c, ['users', 'products'])),

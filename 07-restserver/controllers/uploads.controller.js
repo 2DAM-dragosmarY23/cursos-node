@@ -34,7 +34,7 @@ const loadArchive = async (req, res = response) => {
 
 }
 
-
+///Actualizar imagen
 const updateImage = async (req, res = response) => {
 
 
@@ -114,7 +114,7 @@ const updateImage = async (req, res = response) => {
 }
 
 
-
+//Subir imagen a cloudinary
 const updateImageCloudinary = async (req, res = response) => {
 
 
@@ -189,7 +189,7 @@ const updateImageCloudinary = async (req, res = response) => {
 }
 
 
-
+//Mostrar imagen (get)
 const showImage = async (req, res = response) => {
 
     const { id, collection } = req.params;
@@ -258,18 +258,6 @@ const showImage = async (req, res = response) => {
 
 
 }
-
-
-
-
-
-
-
-
-
-
-
-
 
 
 module.exports = {
