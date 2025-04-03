@@ -3,8 +3,9 @@ const { check } = require('express-validator');
 
 
 const { validateFields } = require('../middlewares/validation');
-const { loadArchive, updateImage } = require('../controllers/uploads.controller');
+const { loadArchive, updateImage, showImage, updateImageCloudinary } = require('../controllers/uploads.controller');
 const { validCollections } = require('../helpers/db-validators');
+const { validateArchiveUp } = require('../middlewares');
 
 
 const router = Router();
@@ -13,10 +14,18 @@ const router = Router();
 router.post('/', loadArchive);
 
 router.put('/:collection/:id', [
+    validateArchiveUp,
     check('id', 'No es un ID valido').isMongoId(),
     check('collection').custom(c => validCollections(c, ['users', 'products'])),
     validateFields
-], updateImage);
+], updateImageCloudinary);
+// ], updateImage);
+
+router.get('/:collection/:id', [
+    check('id', 'No es un ID valido').isMongoId(),
+    check('collection').custom(c => validCollections(c, ['users', 'products'])),
+    validateFields
+], showImage);
 
 
 

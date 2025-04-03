@@ -31,6 +31,7 @@ const uploadArchive = (files, validExtensions = ['png', 'jpg', 'jpeg', 'gif'], f
         });
 
 
+        
 
 
     });
