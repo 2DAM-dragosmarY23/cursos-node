@@ -1,5 +1,7 @@
 const Role = require('../models/role');
 const User = require('../models/user');
+const Category = require('../models/category');
+const { Product } = require('../models');
 
 
 const isValidRole = async (role = '') => {
@@ -22,7 +24,7 @@ const emailExists = async (email = '') => {
 
 const existsUserId = async (id) => {
 
-    //Verificar si el correo existe
+    //Verificar si el usuario existe
     const existsUser = await User.findById(id);
     if (!existsUser) {
         throw new Error(`El id: ${id} no existe`);
@@ -30,7 +32,39 @@ const existsUserId = async (id) => {
 
 }
 
+const existCategory = async (id) => {
+    console.log("Verificando categoría con ID:", id); // Agrega este log para depurar
+    const existsCategory = await Category.findById(id);
+    if (!existsCategory) {
+        throw new Error(`La categoria con el id: ${id} no existe`);
+    }
+};
 
-module.exports = { isValidRole, emailExists, existsUserId }
+const existProduct = async (id) => {
+    //Verificar si el producto existe
+    const existsProduct = await Product.findById(id);
+    if (!existsProduct) {
+        throw new Error(`El producto con el id: ${id} no existe`);
+    }
+
+}
+
+// Validar colecciones permitidas
+const validCollections = (collection = '', collections = []) => {
+    const included = collections.includes(collection);
+    if (!included) {
+        throw new Error(`La colección ${collection} no es permitida, ${collections}`);
+    }
+    return true;
+}
+
+
+module.exports = { isValidRole, 
+    emailExists, 
+    existsUserId, 
+    existCategory, 
+    existProduct,
+    validCollections
+};
 
 
