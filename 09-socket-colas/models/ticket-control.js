@@ -70,6 +70,13 @@ class TicketControl {
         if (this.lastFour.length > 4) {
             this.lastFour.splice(-1, 1); // Elimina el último ticket si hay más de 4
         }
+
+        // Actualiza el ticket en la lista de tickets pendientes
+        const ticketIndex = this.tickets.findIndex(t => t.number === ticket.number);
+
+        if (ticketIndex !== -1) {
+            this.tickets[ticketIndex] = ticket; // Actualiza el ticket en la lista de tickets pendientes
+        }
     
         this.saveDB(); // Guarda los cambios en el archivo JSON
         return ticket; // Devuelve el ticket atendido

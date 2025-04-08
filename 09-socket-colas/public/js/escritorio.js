@@ -3,6 +3,7 @@ const lblEscritorio = document.querySelector('h1');
 const btnAtender = document.querySelector('button');
 const lblTicket = document.querySelector('small');
 const divAlert = document.querySelector('.alert');
+const lblPendientes = document.querySelector('#lblPendientes');
 
 
 
@@ -36,10 +37,13 @@ socket.on('disconnect', () => {
     btnAtender.disabled = true;
 });
 
-socket.on('last-ticket', (last) => {
-    // lblNuevoTicket.innerText = 'Ultimo Ticket: ' + last;
-
-})
+socket.on('ticket-pending', (pending) => {
+    if (pending === 0) {
+        lblPendientes.style.display = 'none';
+        return;
+    }
+    lblPendientes.innerText = pending;
+});
 
 
 
@@ -53,5 +57,10 @@ btnAtender.addEventListener('click', () => {
 
         lblTicket.innerText = 'Ticket ' + ticket.number;
         divAlert.style.display = 'none'; // Ocultamos la alerta si hay un ticket
+
+
+        
     });
+
+
 });

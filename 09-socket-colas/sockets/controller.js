@@ -8,12 +8,16 @@ const socketController = (socket) => {
     socket.emit('last-ticket', ticketControl.last); // Envia el último ticket al cliente
     socket.emit('status-actual', ticketControl.lastFour); // Envia el estado actual de los últimos 4 tickets al cliente
     
+    //'ticket-pending', ticketControl.tickets
+    socket.emit('ticket-pending', ticketControl.tickets.length); // Envia los tickets pendientes al cliente
+
+
     socket.on('next-ticket', ( payload, callback ) => {
         
         const next = ticketControl.nextTicket();
         callback(next); // Envia el ticket al cliente
         
-        //TODO: Notificar que hay un nuevo ticket pendiente
+        socket.broadcast.emit('ticket-pending', ticketControl.tickets.length);
         
         
     })
@@ -30,18 +34,22 @@ const socketController = (socket) => {
         
         socket.broadcast.emit('status-actual', ticketControl.lastFour);
 
+        //TODO: Notificar que hay un nuevo ticket pendiente
+        socket.broadcast.emit('ticket-pending', ticketControl.tickets.length); // Envia los tickets pendientes al cliente           
+
+        
         if (!ticket) {
             return callback({
                 ok: false,
                 msg: 'No hay tickets pendientes'
             });
         }
-    
+        
         callback({
             ok: true,
             ticket
         });
-    
+        
         // TODO: Notificar el cambio en los últimos 4 tickets
     });
 
